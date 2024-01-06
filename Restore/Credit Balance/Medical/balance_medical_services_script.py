@@ -2,9 +2,18 @@ import pandas as pd
 
 ## Change what is in the quotes to the name of the csv file order for the program to work
 print('Data pulled on 1/5/24')
-print('Loading data...')
-file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Credit Balance\Medical\balance_medical_services_data.csv'
-df  = pd.read_csv(file_path)
+## File path is different on laptop and pc
+laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Promotions\balance_medical_services_data.csv'
+pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Credit Balance\Medical\balance_medical_services_data.csv'
+file_path = input('Are you on the laptop or pc: ')
+if file_path == 'laptop':
+    df  = pd.read_csv(laptop_file_path)
+elif file_path == 'pc':
+    df  = pd.read_csv(pc_file_path)
+else:
+    print('Unrecognized input. Rerun the program')
+    quit()
+print('Loading the data...')
 ## Drop uneeded columns in current patch
 print('Dropping columns...')
 df = df.drop(columns=['Studio Name', 'Day of Issue Date', 'Day of Expire Date', 'Client ID', 'Business Category', 'Credit Source', 'Initial Credit Count', 'Used Credit Count', 'Index', 'Max date'])
@@ -87,6 +96,11 @@ while True:
     excel_file = input('Would you like to create an excel sheet with this? (y/n): ')
     if excel_file == 'y':
         excel_sheet_name = input('Name the excel file: ')
+        print('Adding columns...')
+        medical_text_list['First Contact Rep Initials'] = ''
+        medical_text_list['Second Contact Rep Initials'] = ''
+        medical_text_list['Third Contact Rep Initials'] = ''
+        medical_text_list['Notes'] = ''
         print('Saving...')
         medical_text_list.to_excel(f'{excel_sheet_name}.xlsx')
         print(f'Success! Saved file as "{excel_sheet_name}"')

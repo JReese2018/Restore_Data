@@ -2,10 +2,18 @@ import pandas as pd
 
 ## Read te data
 print('Data pulled on 1/2/24')
+## File path is different on laptop and pc
+laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Promotions\restore_3_for_50_data.csv'
+pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Promotions\restore_3_for_50_data.csv'
+file_path = input('Are you on the laptop or pc: ')
+if file_path == 'laptop':
+    df  = pd.read_csv(laptop_file_path)
+elif file_path == 'pc':
+    df  = pd.read_csv(pc_file_path)
+else:
+    print('Unrecognized input. Rerun the program')
+    quit()
 print('Loading the data...')
-file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Promotions\restore_3_for_50_data.csv'
-df  = pd.read_csv(file_path)
-
 ## Getting rid of unneeded columns
 print('Dropping columns...')
 df = df.drop(columns=['Studio Code', 'Purchase Date', 'Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Discount', 'Quantity', 'Credit Used'])
@@ -47,6 +55,11 @@ while True:
     excel_file = input('Would you like to create an excel sheet with this? (y/n): ')
     if excel_file == 'y':
         excel_sheet_name = input('Name the excel file: ')
+        print('Adding columns...')
+        final_text_list['First Contact Rep Initials'] = ''
+        final_text_list['Second Contact Rep Initials'] = ''
+        final_text_list['Third Contact Rep Initials'] = ''
+        final_text_list['Notes'] = ''
         print('Saving...')
         final_text_list.to_excel(f'{excel_sheet_name}.xlsx')
         print(f'Success! Saved file as "{excel_sheet_name}"')
