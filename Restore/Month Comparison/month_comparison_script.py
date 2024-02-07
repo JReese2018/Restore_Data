@@ -4,8 +4,8 @@ import time
 
 
 print('Data pulled on 2/6/24')
-previous_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Credit Balance\Medical\balance_medical_services_data.csv'
-current_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Credit Balance\Medical\balance_medical_services_data.csv'
+previous_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\march2023.csv'
+current_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\january2024.csv'
 
 previous_pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Month Comparison\march2023.csv'
 current_pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Month Comparison\january2024.csv'
@@ -65,6 +65,8 @@ elif previous_month == '11':
     previous_month = 'November'
 elif previous_month == '12':
     previous_month = 'December'
+else:
+    current_month = 'this month'
 print('Calculating Number of Membership in second dataset...')
 current_discover_count = len(current_df.loc[current_df['Item'] == 'Discover Membership'])
 current_levelup_count = len(current_df.loc[current_df['Item'] == 'Level Up Membership'])
@@ -102,6 +104,8 @@ elif current_month == '11':
     current_month = 'November'
 elif current_month == '12':
     current_month = 'December'
+else:
+    current_month = 'this month'
 print('Identifying lost members, this could take a some time...')
 merged_df = pd.merge(previous_df, current_df, on='Name', suffixes=('_prev', '_current'), how='outer', indicator=True)
 lost_members = merged_df[merged_df['_merge'] == 'left_only'][['Name', 'Email_prev', 'Phone #_prev', 'Item_prev']].values.tolist()
@@ -124,6 +128,8 @@ overlap_members_df = pd.DataFrame(overlap_members, columns=['Name', 'Email', 'Ph
 print('Compiling results and wrapping up...')
 #time.sleep(3)
 
+print('Here are your results')
+print(f'Total number of all memberships in {previous_month}: {previous_membership_count}')
 print(f'Number of Discover Memberships: {previous_discover_count}')
 print(f'Number of Level Up Memberships: {previous_levelup_count}')
 print(f'Number of Elevate Memberships: {previous_elevate_count}')
@@ -133,10 +139,10 @@ print(f'Number of Restore Couples Memberships: {previous_restorecouples_count}')
 print(f'Number of Wellness Memberships: {previous_wellness_count}')
 print(f'Number of Wellness Couples Memberships: {previous_wellnesscouples_count}')
 print(f'Number of Daily Memberships: {previous_daily_count}')
-print(f'Total number of all memberships in {previous_month}: {previous_membership_count}')
 print('')
 print('')
 print('')
+print(f'Total number of all memberships in {current_month}: {current_membership_count}')
 print(f'Number of Discover Memberships: {current_discover_count}')
 print(f'Number of Level Up Memberships: {current_levelup_count}')
 print(f'Number of Elevate Memberships: {current_elevate_count}')
@@ -146,14 +152,49 @@ print(f'Number of Restore Couples Memberships: {current_restorecouples_count}')
 print(f'Number of Wellness Memberships: {current_wellness_count}')
 print(f'Number of Wellness Couples Memberships: {current_wellnesscouples_count}')
 print(f'Number of Daily Memberships: {current_daily_count}')
-print(f'Total number of all memberships in {current_month}: {current_membership_count}')
 print('')
 print('')
 print('')
 print('Here are all of your lost members between the two datasets')
 print(lost_members_df)
+while True:
+    excel_file = input('Would you like to create an excel sheet with this? (y/n): ')
+    if excel_file == 'y':
+        excel_sheet_name = input('Name the excel file: ')
+        print('Adding columns...')
+        lost_members_df['First Contact Rep Initials'] = ''
+        lost_members_df['Second Contact Rep Initials'] = ''
+        lost_members_df['Third Contact Rep Initials'] = ''
+        lost_members_df['Notes'] = ''
+        print('Saving...')
+        lost_members_df.to_excel(f'{excel_sheet_name}.xlsx')
+        print(f'Success! Saved file as "{excel_sheet_name}"')
+        break
+    elif excel_file == 'n':
+        break
+    else:
+        print('Please enter y for yes or n for no')
 print('')
 print('')
 print('')
 print('Here are all of you members who are in both datasets')
 print(overlap_members_df)
+
+while True:
+    excel_file = input('Would you like to create an excel sheet with this? (y/n): ')
+    if excel_file == 'y':
+        excel_sheet_name = input('Name the excel file: ')
+        print('Adding columns...')
+        overlap_members_df['First Contact Rep Initials'] = ''
+        overlap_members_df['Second Contact Rep Initials'] = ''
+        overlap_members_df['Third Contact Rep Initials'] = ''
+        overlap_members_df['Notes'] = ''
+        print('Saving...')
+        overlap_members_df.to_excel(f'{excel_sheet_name}.xlsx')
+        print(f'Success! Saved file as "{excel_sheet_name}"')
+        break
+    elif excel_file == 'n':
+        print('Re-run the program to start over')
+        break
+    else:
+        print('Please enter y for yes or n for no')
