@@ -3,7 +3,7 @@ import pandas as pd
 ## Change what is in the quotes to the name of the csv file order for the program to work
 print('Data pulled on 1/5/24')
 ## File path is different on laptop and pc
-laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Promotions\balance_medical_services_data.csv'
+laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Credit Balance\Medical\balance_medical_services_data.csv'
 pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Credit Balance\Medical\balance_medical_services_data.csv'
 file_path = input('Are you on the laptop or pc: ')
 if file_path == 'laptop':
