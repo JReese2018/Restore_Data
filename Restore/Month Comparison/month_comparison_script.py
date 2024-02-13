@@ -4,7 +4,7 @@ import time
 
 
 print('Data pulled on 2/6/24')
-previous_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\march2023.csv'
+previous_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\2022-2023.csv'
 current_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\january2024.csv'
 
 previous_pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Month Comparison\march2023.csv'
@@ -125,6 +125,10 @@ for index, row1 in previous_df.iterrows():
 print('Configuring data...')
 lost_members_df = pd.DataFrame(lost_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
 overlap_members_df = pd.DataFrame(overlap_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
+print('Dropping Duplicates...')
+## Dropping dulplicates
+lost_members_df = lost_members_df.drop_duplicates(subset=['Name'])
+overlap_members_df = overlap_members_df.drop_duplicates(subset=['Name'])
 print('Compiling results and wrapping up...')
 #time.sleep(3)
 
