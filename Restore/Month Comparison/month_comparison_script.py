@@ -4,7 +4,7 @@ import time
 
 
 print('Data pulled on 2/6/24')
-previous_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\2022-2023.csv'
+previous_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\march2023.csv'
 current_laptop_file_path = r'C:\Users\jason\Documents\GitHub\Restore_Data\Restore\Month Comparison\january2024.csv'
 
 previous_pc_file_path = r'C:\Users\jason\OneDrive\Documents\GitHub\Restore_Data\Restore\Month Comparison\march2023.csv'
