@@ -1,0 +1,37 @@
+<!--Add Nav Bar-->
+{% extends "base.html"%} 
+<!--Change Title of Page-->
+{% block title %}Feedback • Wardrobe Optimizer{% endblock %}
+<!--Add Content-->
+{%block content%} 
+
+    <div class="container-fluid">
+      <h1 style="text-align:center">Tell us your thoughts!</h1>
+      <p style="text-align:center">We are always looking for ways to imporve the program. Even if it's something small.</p>
+      <p style="text-align:center">We also don't catch everything through testing so your input allows us to improve the user experience!</p>
+      <h4 style="text-align:center">Things we're working on:</h4>
+      <p style="text-align:center" class="mt-3">We have current plans to integrate AI in improving the <a href="/random">Random</a> section of the site.</p>
+      <p style="text-align:center">We are thinking about adding brands to add options in the <a href="/addnew">Add New</a> section. With the shear amount of brands in the world (especially small businesses that we continuously support), we feel will never be able to catch up.</p>
+      <p style="text-align:center">Adding support for Hoodies.</p>
+      <form method="post">
+          <div class="row">
+          <div class="col-2"></div>
+          <div class="col">      <div class="mt-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control"  name="email" placeholder="name@example.com">
+          </div>
+          <div class="mt-3">
+            <label for="feedback" class="form-label">Feedback</label>
+            <textarea class="form-control" name="feedback" placeholder="Tell us where we can imporve" rows="5"></textarea>
+          </div>
+          </div>
+            <div class="col-2"></div>
+          </div>
+
+          <div class="container-fluid" id="container">
+            <button type="sumbit" class="btn btn-primary mt-3" role="button" id="loginNoUser">Submit</button>
+        </div>
+    </div>
+  </form>
+
+  {% endblock %}

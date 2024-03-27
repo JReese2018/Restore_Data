@@ -125,6 +125,10 @@ for index, row1 in previous_df.iterrows():
 print('Configuring data...')
 lost_members_df = pd.DataFrame(lost_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
 overlap_members_df = pd.DataFrame(overlap_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
+print('Dropping Duplicates...')
+## Dropping dulplicates
+lost_members_df = lost_members_df.drop_duplicates(subset=['Name'])
+overlap_members_df = overlap_members_df.drop_duplicates(subset=['Name'])
 print('Compiling results and wrapping up...')
 #time.sleep(3)
 
