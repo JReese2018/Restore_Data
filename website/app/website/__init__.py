@@ -8,7 +8,7 @@ db = SQLAlchemy()
 
 # Name of database (Whatever you want inside the quotes)
 
-DB_NAME = ""
+DB_NAME = "restore"
 
 # If you want to put a date (Not Required)
 
@@ -33,7 +33,7 @@ def create_app():
 
     # Not sure if below line is necceary
 
-    from .models import Shirt, Pants, Shoes, User # Tables from Database
+    from .models import User, User_Feedback # Tables from Database
 
     create_database(app)
 

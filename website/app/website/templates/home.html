@@ -1,0 +1,24 @@
+<!--Add Nav Bar-->
+{% extends "base.html"%} 
+<!--Change Title of Page-->
+{% block title %}Restore Data Project{% endblock %}
+<!--Add Content-->
+{%block content%} 
+
+<div class="container-fluid" style="text-align: center">
+    <h3>Welcome! Let's Optimize and Find Insights in your Reports!</h3>
+    <div>
+        <a class="btn btn-primary mt-2" href="/credit-balance" role="button" id="home_page_button">Client Credit Balance</a>
+    </div>
+    <div>
+        <a class="btn btn-primary mt-2" href="/promotions" role="button" id="home_page_button">Promotions (3 for $50, $99 Base IV, etc)</a>
+    </div>
+    <div>
+        <a class="btn btn-primary mt-2" href="/month-comparison" role="button" id="home_page_button">Membership Month Comparison</a>
+    </div>
+    <div>
+        <a class="btn btn-primary mt-2" href="/feedback" role="button" id="home_page_button">Feedback (What should I add?)</a>
+    </div>
+</div>
+
+{% endblock %}
