@@ -31,19 +31,24 @@ def home():
 def info():
     return render_template("info.html", user=current_user)
 
-@views.route('/credit-balance', methods=['GET', 'POST'])
-def credit_balance():
+@views.route('/credit-utilization', methods=['GET', 'POST'])
+@login_required
+def credit_utilization():
     form = UploadFileForm()
-    return render_template("credit_balance.html", user=current_user, form=form)
+    return render_template("credit_utilization.html", user=current_user, form=form)
 
 ## This might be scrapped because tableu has a tab that can be used to get the same data that I was going to do I think
 @views.route('/promotions', methods=['GET', 'POST'])
+@login_required
 def promotions():
-    return render_template("promotions.html", user=current_user)
+    form = UploadFileForm()
+    return render_template("promotions.html", user=current_user, form=form)
 
 @views.route('/month-comparison', methods=['GET', 'POST'])
+@login_required
 def month_comparison():
-    return render_template("month_comparison.html", user=current_user)
+    form = UploadFileForm()
+    return render_template("month_comparison.html", user=current_user, form=form)
 
 @views.route('/feedback', methods=['GET', 'POST'])
 def feedback():

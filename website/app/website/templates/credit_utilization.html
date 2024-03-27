@@ -1,0 +1,40 @@
+<!--Add Nav Bar-->
+{% extends "base.html"%} 
+<!--Change Title of Page-->
+{% block title %}Credit Utilization{% endblock %}
+<!--Add Content-->
+{%block content%} 
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="custom-file mb-3">
+        {{ form.file() }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+<form method="POST">
+    <h1 style="text-align:center">Credit Utilization Finder</h1>
+    <div class="container-fluid">    
+        <div class="card mt-5" id="signupCard">
+            <h5 class="card-header" style="text-align: center;">Login</h5>
+            <div class="card-body">
+                <div class="row mb-2">
+                    {{ form.file(class=form-control mx-auto) }}
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="utilization" name="utilization">
+                    <label for="utilization">Utilization % (0-100)</label>
+                </div>
+                <div class="row">    
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>    
+            </div>
+        </div>
+    </div>
+    <p><!--Space--></p>
+    <p style="text-align: center">Please email jreese@restore.com for login information</p>
+  </form>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 <!--Add Nav Bar-->
 {% extends "base.html"%} 
 <!--Change Title of Page-->
-{% block title %}Login • Restore's Data Cleaner{% endblock %}
+{% block title %}Login{% endblock %}
 <!--Add Content-->
 {%block content%} 
   <form method="POST">
@@ -12,7 +12,7 @@
             <div class="card-body">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="username" name="username">
-                    <label for="email">Username</label>
+                    <label for="text">Username</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="password" name="password">
@@ -27,6 +27,7 @@
     </div>
     <p><!--Space--></p>
     <p style="text-align: center">Please email jreese@restore.com for login information</p>
+  </form>
     {% endblock %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"
     integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA=="

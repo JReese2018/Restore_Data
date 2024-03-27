@@ -15,13 +15,14 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user = User.query.filter_by(email=username).first()
+        user = User.query.filter_by(username=username).first()
+        ## Not going to encrypt the passwords because data will not be saved onto the site
+        ## Will need to encrypt if that decision is changed in the future
         if user:
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category='successs')
                 login_user(user, remember=True)
-                ## Need to change the below line to correspond with "Home Page"
-                return redirect(url_for('views.base'))
+                return redirect(url_for('views.home'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -42,32 +43,29 @@ def logout():
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
-        first_name = request.form.get('firstName')
-        last_name = request.form.get('lastName')
         username = request.form.get('username')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        admin_key = request.form.get('admin_key')
         
         # Requirements can be changed to your liking
 
-        user = User.query.filter_by(email=username).first()
+        user = User.query.filter_by(username=username).first()
         if user:
-            flash('Email already exists', category='error')
-        elif len(last_name) < 2:
-            flash('Are you sure that is your name? It might be longer.', category='error')
-        elif len(username) < 5:
-            flash('Please enter a valid username.', category='error')
+            flash('Username already exists', category='error')
         elif len(password1) < 7:
             flash('Your password must be at least 8 characters', category='error')
         elif password1 != password2:
             flash('Your passwords do not match!', category='error')
+        elif admin_key != 1459:
+            flash('Admin Key is incorrect', category='error')
         else:
-            new_user =User(username=username, first_name=first_name, last_name=last_name, password=generate_password_hash(password1, method='sha256'))
+            new_user =User(username=username, password=generate_password_hash(password1, method='pbkdf2:sha256'))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.today'))
+            return redirect(url_for('views.home'))
             
 
     return render_template("signup.html", user=current_user)

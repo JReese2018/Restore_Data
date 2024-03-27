@@ -12,8 +12,6 @@ from sqlalchemy.sql import func
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(150), nullable=False)
-    last_name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150), nullable=False)
 
@@ -21,3 +19,11 @@ class User_Feedback(db.Model):
     feedback_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100))
     feedback = db.Column(db.String(10000))
+
+## Would need to add a new column every time you add
+class Counter(db.Model):
+    counter_id = db.Column(db.Integer, primary_key=True)
+    times_used_credit_balance = db.Column(db.Integer, nullable=False)
+    times_used_promotions = db.Column(db.Integer, nullable=False)
+    times_used_month_comparison = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
