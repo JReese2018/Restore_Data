@@ -5,36 +5,38 @@
 <!--Add Content-->
 {%block content%} 
 
-<form method="POST">
-    {{ form.hidden_tag() }}
-
-    <div class="custom-file mb-3">
-        {{ form.file() }}
-    </div>
-    {{ form.submit(class="btn btn-primary") }}
-</form>
-
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <h1 style="text-align:center">Credit Utilization Finder</h1>
     <div class="container-fluid">    
         <div class="card mt-5" id="signupCard">
-            <h5 class="card-header" style="text-align: center;">Login</h5>
+            <h5 class="card-header" style="text-align: center;">Upload your Spreadsheet</h5>
             <div class="card-body">
-                <div class="row mb-2">
-                    {{ form.file(class=form-control mx-auto) }}
+                <div class="row justify-content-center mb-2">
+                    <label>Upload File</label>
+                    <div class="col">
+                        {{ form.file(class="form-control") }}
+                    </div>     
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="utilization" name="utilization">
-                    <label for="utilization">Utilization % (0-100)</label>
+                <div class="row">
+                    <div class="col">
+                        <label>Type of Service</label>
+                        <select class="form-select mb-2" id="service_type" name="service_type">
+                            <option selected>Core</option>
+                            <option>Medical</option>
+                            <option>Skin Health</option>
+                        </select>
+                    </div>
                 </div>
+                <div class="mb-3">
+                    <label for="utilization" class="form-label">Utilization % (0-100)</label>
+                    <input type="number" class="form-control" id="utilization" placeholder="Only the Number" name="utilization">
+                  </div>
                 <div class="row">    
                     {{ form.submit(class="btn btn-primary") }}
-                </div>    
+                </div> 
             </div>
         </div>
     </div>
-    <p><!--Space--></p>
-    <p style="text-align: center">Please email jreese@restore.com for login information</p>
   </form>
 
 {% endblock %}

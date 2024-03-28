@@ -57,7 +57,7 @@ def sign_up():
             flash('Your password must be at least 8 characters', category='error')
         elif password1 != password2:
             flash('Your passwords do not match!', category='error')
-        elif admin_key != 1459:
+        elif admin_key != '1459':
             flash('Admin Key is incorrect', category='error')
         else:
             new_user =User(username=username, password=generate_password_hash(password1, method='pbkdf2:sha256'))
