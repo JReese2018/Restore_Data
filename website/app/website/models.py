@@ -8,7 +8,6 @@ from sqlalchemy.sql import func
 # change something in the database on DBeaver (or whatever you use), make sure
 # change it here.
 
-# The "User" class will likely look similar across apps that have a user login
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,4 +25,13 @@ class Counter(db.Model):
     times_used_credit_balance = db.Column(db.Integer, nullable=False)
     times_used_promotions = db.Column(db.Integer, nullable=False)
     times_used_month_comparison = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Credit_list(db.Model):
+    list_id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    phone_number = db.Column(db.String(100), nullable=False)
+    credit_description = db.Column(db.String(100), nullable=False)
+    remaining_credits = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

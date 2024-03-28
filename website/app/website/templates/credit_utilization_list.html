@@ -1,0 +1,20 @@
+<!--Add Nav Bar-->
+{% extends "base.html"%} 
+<!--Change Title of Page-->
+{% block title %}List{% endblock %}
+<!--Add Content-->
+{%block content%} 
+
+<div class="container">
+    <h1 style="text-align: center;">Here is your List with {{ utilization }}% Utilization</h1>
+    <p style="text-align: center;">This means that these individuals have used {{ utilization }}% of the pack that they purchased</p>
+    <p style="text-align: center;">Click the button below if you would like to download this list!</p>
+    <div class="mt-3">
+        <a href="{{ url_for('views.download_csv') }}" class="btn btn-primary" role="button" download="core_list.csv">Download CSV</a>
+    </div>
+    <div class="table-responsive">
+        {{ table|safe }}
+    </div>
+</div>
+
+{% endblock %}

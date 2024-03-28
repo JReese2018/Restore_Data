@@ -54,7 +54,7 @@ for index, row in df_bundles.iterrows():
 
 ## Create frame
 print('Compiling results...')
-bundles_frame = pd.DataFrame(bundles_contact_list, columns=['Full Name', 'Email', 'Phone', 'Credit Description', 'Remaining Credits'])
+bundles_frame = pd.DataFrame(bundles_contact_list, columns=['Full Name', 'Email', 'Phone Number', 'Credit Description', 'Remaining Credits'])
 
 ## Working on packs
 print('Finding packs...')
@@ -80,7 +80,7 @@ for index, row in df_packs.iterrows():
 
 ## Create frame
 print('Compiling results...')
-packs_frame = pd.DataFrame(packs_contact_list, columns=['Full Name', 'Email', 'Phone', 'Credit Description', 'Remaining Credits'])
+packs_frame = pd.DataFrame(packs_contact_list, columns=['Full Name', 'Email', 'Phone Number', 'Credit Description', 'Remaining Credits'])
 
 
 ## Combining List
