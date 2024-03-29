@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
@@ -8,6 +8,7 @@ from .models import User, User_Feedback, Counter, Credit_list
 from sqlalchemy.sql.expression import func, select, desc
 from . import db
 import pandas as pd
+import io
 
 # This file is your backend to all your pages on your app. I left an example on how
 # to post things to the database. This also shows how to use the flask functions like
@@ -89,7 +90,21 @@ def credit_utilization():
             core_list_df_reset = core_list_df.set_index(['Full Name', 'Email', 'Phone Number', 'Credit Description', 'Remaining Credits'])
             print('Here is your list')
             print(core_list_df_reset)
-            return redirect(url_for('views.credit_utilization_list', table=core_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
+            print('Adding columns...')
+            core_list_df['First Contact Rep Initials'] = ''
+            core_list_df['Second Contact Rep Initials'] = ''
+            core_list_df['Third Contact Rep Initials'] = ''
+            core_list_df['Notes'] = ''
+            print('Saving...')
+            filename = (f'Skin_Health_{converted_utilization}_{date_time}.xlsx')
+            excel_data = io.BytesIO()
+            core_list_df.to_excel(excel_data, index=False)
+            excel_data.seek(0)
+            return send_file(excel_data, as_attachment=True, download_name=filename)
+        
+            ## We need to figure out how to get the program to download the csv and redirect to table page
+            #return redirect(url_for('views.credit_utilization_list', table=core_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
+            
         
         elif service_type == 'Medical':
             df = pd.read_csv(uploaded_file.stream)
@@ -171,8 +186,21 @@ def credit_utilization():
             medical_text_list_reset = medical_text_list.set_index(['Full Name', 'Email', 'Phone Number', 'Credit Description', 'Remaining Credits'])
             print('Here is your list')
             print(medical_text_list_reset)
+            print('Adding columns...')
+            medical_text_list['First Contact Rep Initials'] = ''
+            medical_text_list['Second Contact Rep Initials'] = ''
+            medical_text_list['Third Contact Rep Initials'] = ''
+            medical_text_list['Notes'] = ''
+            print('Saving...')
+            filename = (f'Skin_Health_{converted_utilization}_{date_time}.xlsx')
+            excel_data = io.BytesIO()
+            medical_text_list.to_excel(excel_data, index=False)
+            excel_data.seek(0)
+            return send_file(excel_data, as_attachment=True, download_name=filename)
+        
+            ## We need to figure out how to get the program to download the csv and redirect to table page
+            #return redirect(url_for('views.credit_utilization_list', table=medical_text_list_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
             
-            return redirect(url_for('views.credit_utilization_list', table=medical_text_list_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
         
         elif service_type == 'Skin Health':
             df = pd.read_csv(uploaded_file.stream)
@@ -213,20 +241,24 @@ def credit_utilization():
             ## Create frame and export
             print('Compiling results...')
             skin_list_df = pd.DataFrame(contact_list, columns=['Full Name', 'Email', 'Phone Number', 'Credit Description', 'Remaining Credits'])
-
+            print(skin_list_df)
             skin_list_df_reset = skin_list_df.set_index(['Full Name', 'Email', 'Phone Number', 'Credit Description', 'Remaining Credits'])
             print('Here is your list')
             print(skin_list_df_reset)
-            excel_sheet_name = input('Name the excel file: ')
             print('Adding columns...')
             skin_list_df['First Contact Rep Initials'] = ''
             skin_list_df['Second Contact Rep Initials'] = ''
             skin_list_df['Third Contact Rep Initials'] = ''
             skin_list_df['Notes'] = ''
             print('Saving...')
-            skin_list_df.to_excel(f'{excel_sheet_name}.xlsx')
-            print(f'Success! Saved file as "{excel_sheet_name}"')
-            return redirect(url_for('views.credit_utilization_list', table=skin_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
+            filename = (f'Skin_Health_{converted_utilization}_{date_time}.xlsx')
+            excel_data = io.BytesIO()
+            skin_list_df.to_excel(excel_data, index=False)
+            excel_data.seek(0)
+            return send_file(excel_data, as_attachment=True, download_name=filename)
+        
+            ## We need to figure out how to get the program to download the csv and redirect to table page
+            #return redirect(url_for('views.credit_utilization_list', table=skin_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
 
     return render_template("credit_utilization.html", user=current_user, form=form)
 
