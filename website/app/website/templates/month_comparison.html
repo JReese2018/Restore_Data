@@ -5,4 +5,75 @@
 <!--Add Content-->
 {%block content%} 
 
+<form method="POST" enctype="multipart/form-data">
+    <h1 style="text-align:center">Month Comparison</h1>
+    <div class="container-fluid">    
+        <div class="card mt-5 mb-5" id="signupCard">
+            <h5 class="card-header" style="text-align: center;">Upload your Spreadsheet</h5>
+            <div class="card-body">
+                <div class="row justify-content-center mb-2">
+                    <label class="mb-1">Upload Previos Month File</label>
+                    <div class="col">                  
+                        {{ form.file1(class="form-control") }}
+                        {% if form.file1.errors %}
+                            <span style="color: red;">{{ form.file1.errors[0] }}</span>
+                        {% endif %}
+                    </div>     
+                </div>
+                <div class="row justify-content-center mb-2">
+                    <label class="mb-1">Upload Next Month File</label>
+                    <div class="col">
+                        {{ form.file2(class="form-control") }}
+                        {% if form.file2.errors %}
+                            <span style="color: red;">{{ form.file2.errors[0] }}</span>
+                        {% endif %}
+                    </div>     
+                </div>
+                <div class="row">    
+                    {{ form.submit(class="btn btn-primary") }}
+                </div> 
+            </div>
+        </div>
+        <div class="row container-fluid">
+        <div class="card" id="month_card">
+            <div class="card-header">
+              Previous Month
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" id="previous_membership_count">Total number of all memberships: {{ previous_membership_count }}</li>
+              <li class="list-group-item" id="previous_discover_count">Number of Discover Memberships: {{ previous_discover_count }}</li>
+              <li class="list-group-item" id="previous_levelup_count">Number of Level Up Memberships: {{ previous_levelup_count }}</li>
+              <li class="list-group-item" id="previous_elevate_count">Number of Elevate Memberships: {{ previous_elevate_count }}</li>
+              <li class="list-group-item" id="previous_core_count">Number of Core Memberships: {{ previous_core_count }}</li>
+              <li class="list-group-item" id="previous_restore_count">Number of Restore Memberships: {{ previous_restore_count }}</li>
+              <li class="list-group-item" id="previous_restorecouples_count">Number of Restore Couples Memberships: {{ previous_restorecouples_count }}</li>
+              <li class="list-group-item" id="previous_wellness_count">Number of Wellness Memberships: {{ previous_wellness_count }}</li>
+              <li class="list-group-item" id="previous_wellnesscouples_count">Number of Wellness Couples Memberships: {{ previous_wellnesscouples_count }}</li>
+              <li class="list-group-item" id="previous_daily_count">Number of Daily Memberships: {{ previous_daily_count }}</li>
+            </ul>
+        </div>
+        <div class="card" id="month_card">
+            <div class="card-header">
+                Current Month
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" id="current_membership_count">Total number of all memberships: {{ current_membership_count }}</li>
+              <li class="list-group-item" id="current_discover_count">Number of Discover Memberships: {{ current_discover_count }}</li>
+              <li class="list-group-item" id="current_levelup_count">Number of Level Up Memberships: {{ current_levelup_count }}</li>
+              <li class="list-group-item" id="current_elevate_count">Number of Elevate Memberships: {{ current_elevate_count }}</li>
+              <li class="list-group-item" id="current_core_count">Number of Core Memberships: {{ current_core_count }}</li>
+              <li class="list-group-item" id="current_restore_count">Number of Restore Memberships: {{ current_restore_count }}</li>
+              <li class="list-group-item" id="current_restorecouples_count">Number of Restore Couples Memberships: {{ current_restorecouples_count }}</li>
+              <li class="list-group-item" id="current_wellness_count">Number of Wellness Memberships: {{ current_wellness_count }}</li>
+              <li class="list-group-item" id="current_wellnesscouples_count">Number of Wellness Couples Memberships: {{ current_wellnesscouples_count }}</li>
+              <li class="list-group-item" id="current_daily_count">Number of Daily Memberships: {{ current_daily_count }}</li>
+            </ul>
+        </div>
+        </div>
+        <br>
+        <p>Comparison Models can sometimes take a longer time to process espcialy when more data is attached to it. Please be paitent as tests have shown that the program can take as long as a minute to operate! - Reese</p>
+    </div>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 {% endblock %}

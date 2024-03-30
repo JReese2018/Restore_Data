@@ -1,0 +1,10 @@
+<li class="list-group-item" id="current_membership_count">Total number of all memberships: {{ current_membership_count }}</li>
+              <li class="list-group-item" id="current_discover_count">Number of Discover Memberships: {{ current_discover_count }}</li>
+              <li class="list-group-item" id="current_levelup_count">Number of Level Up Memberships: {{ current_levelup_count }}</li>
+              <li class="list-group-item" id="current_elevate_count">Number of Elevate Memberships: {{ current_elevate_count }}</li>
+              <li class="list-group-item" id="current_core_count">Number of Core Memberships: {{ current_core_count }}</li>
+              <li class="list-group-item" id="current_restore_count">Number of Restore Memberships: {{ current_restore_count }}</li>
+              <li class="list-group-item" id="current_restorecouples_count">Number of Restore Couples Memberships: {{ current_restorecouples_count }}</li>
+              <li class="list-group-item" id="current_wellness_count">Number of Wellness Memberships: {{ current_wellness_count }}</li>
+              <li class="list-group-item" id="current_wellnesscouples_count">Number of Wellness Couples Memberships: {{ current_wellnesscouples_count }}</li>
+              <li class="list-group-item" id="current_daily_count">Number of Daily Memberships: {{ current_daily_count }}</li>

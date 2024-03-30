@@ -8,3 +8,9 @@
     width: 400px;
     cursor: pointer;
 }
+
+#month_card{
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}

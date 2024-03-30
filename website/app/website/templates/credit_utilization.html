@@ -13,13 +13,16 @@
             <div class="card-body">
                 <div class="row justify-content-center mb-2">
                     <label>Upload File</label>
-                    <div class="col">
+                    <div class="col mt-1">
                         {{ form.file(class="form-control") }}
+                        {% if form.file.errors %}
+                            <span style="color: red;">{{ form.file2.errors[0] }}</span>
+                        {% endif %}
                     </div>     
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <label>Type of Service</label>
+                    <label>Type of Service</label>
+                    <div class="col mt-1">
                         <select class="form-select mb-2" id="service_type" name="service_type">
                             <option selected>Core</option>
                             <option>Medical</option>
@@ -29,7 +32,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="utilization" class="form-label">Utilization % (0-100)</label>
-                    <input type="number" class="form-control" id="utilization" placeholder="Only the Number" name="utilization">
+                    <input type="number" class="form-control mt-1" id="utilization" placeholder="Only the Number" name="utilization">
                   </div>
                 <div class="row">    
                     {{ form.submit(class="btn btn-primary") }}

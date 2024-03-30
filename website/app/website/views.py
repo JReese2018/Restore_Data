@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 #from website import date_time
 from datetime import datetime
-from .models import User, User_Feedback, Counter, Credit_list
+from .models import User, User_Feedback, Counter
 from sqlalchemy.sql.expression import func, select, desc
 from . import db
 import pandas as pd
@@ -14,10 +14,15 @@ import io
 # to post things to the database. This also shows how to use the flask functions like
 # redirect, url_for, flash, etc.
 
-## The below class allows file uploads. Note, we are not saving any of these files into a database
+## The below classes allows file uploads. Note, we are not saving any of these files into a database
 class UploadFileForm(FlaskForm):
     file = FileField("File")
     submit = SubmitField("Upload File")
+
+class ComparisonFileForm(FlaskForm):
+    file1 = FileField("File 1")
+    file2 = FileField("File 2")
+    submit = SubmitField('Upload File')
 
 ## This is how we are getting the date and time
 now = datetime.now() 
@@ -27,7 +32,8 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    return render_template("home.html", user=current_user)
+    name = current_user.username.capitalize()
+    return render_template("home.html", user=current_user, name=name)
 
 ## Going to work on this last
 @views.route('/info', methods=['GET', 'POST'])
@@ -100,12 +106,11 @@ def credit_utilization():
             excel_data = io.BytesIO()
             core_list_df.to_excel(excel_data, index=False)
             excel_data.seek(0)
-            return send_file(excel_data, as_attachment=True, download_name=filename)
+            #return send_file(excel_data, as_attachment=True, download_name=filename)
         
             ## We need to figure out how to get the program to download the csv and redirect to table page
-            #return redirect(url_for('views.credit_utilization_list', table=core_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
+            return redirect(url_for('views.credit_utilization_list', table=core_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
             
-        
         elif service_type == 'Medical':
             df = pd.read_csv(uploaded_file.stream)
             print('Loading the data...')
@@ -201,7 +206,6 @@ def credit_utilization():
             ## We need to figure out how to get the program to download the csv and redirect to table page
             #return redirect(url_for('views.credit_utilization_list', table=medical_text_list_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
             
-        
         elif service_type == 'Skin Health':
             df = pd.read_csv(uploaded_file.stream)
             print('Loading the data...')
@@ -279,11 +283,190 @@ def promotions():
 @views.route('/month-comparison', methods=['GET', 'POST'])
 @login_required
 def month_comparison():
-    form = UploadFileForm()
-    return render_template("month_comparison.html", user=current_user, form=form)
+    form = ComparisonFileForm()
+    previous = form.file1.data
+    current =form.file2.data
+
+    previous_membership_count = 'N/A'
+    previous_discover_count = 'N/A'
+    previous_levelup_count = 'N/A'
+    previous_elevate_count = 'N/A'
+    previous_core_count = 'N/A'
+    previous_restore_count = 'N/A'
+    previous_restorecouples_count = 'N/A'
+    previous_wellness_count = 'N/A'
+    previous_wellnesscouples_count = 'N/A'
+    previous_daily_count = 'N/A'
+
+    current_membership_count = 'N/A'
+    current_discover_count = 'N/A'
+    current_levelup_count = 'N/A'
+    current_elevate_count = 'N/A'
+    current_core_count = 'N/A'
+    current_restore_count = 'N/A'
+    current_restorecouples_count = 'N/A'
+    current_wellness_count = 'N/A'
+    current_wellnesscouples_count = 'N/A'
+    current_daily_count = 'N/A'
+
+    if request.method == 'POST':
+        previous_df = pd.read_csv(previous)
+        current_df = pd.read_csv(current)
+        print('Cleaning data...')
+        previous_df = previous_df.drop(columns=['Studio Code', 'Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
+        current_df = current_df.drop(columns=['Studio Code', 'Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
+        print('Creating new column for first and last names...')
+        current_df['Name'] = current_df['First Name'] + ' ' + current_df['Last Name']
+        current_df = current_df.drop(columns=['First Name', 'Last Name'])
+        current_df = current_df[['Name', 'Email', 'Phone #', 'Item', 'Purchase Date']]
+        previous_df['Name'] = previous_df['First Name'] + ' ' + previous_df['Last Name']
+        previous_df = previous_df.drop(columns=['First Name', 'Last Name'])
+        previous_df = previous_df[['Name', 'Email', 'Phone #', 'Item', 'Purchase Date']]
+        print('Calculating Number of Membership in first dataset...')
+        previous_discover_count = len(previous_df.loc[previous_df['Item'] == 'Discover Membership'])
+        previous_levelup_count = len(previous_df.loc[previous_df['Item'] == 'Level Up Membership'])
+        previous_elevate_count = len(previous_df.loc[previous_df['Item'] == 'Elevate Membership'])
+        previous_core_count = len(previous_df.loc[previous_df['Item'] == 'Core Membership'])
+        previous_restore_count = len(previous_df.loc[previous_df['Item'] == 'Restore Membership'])
+        previous_restorecouples_count = len(previous_df.loc[previous_df['Item'] == 'Restore Membership - Couples'])
+        previous_wellness_count = len(previous_df.loc[previous_df['Item'] == 'Wellness Membership'])
+        previous_wellnesscouples_count = len(previous_df.loc[previous_df['Item'] == 'Wellness Membership - Couples'])
+        previous_daily_count = len(previous_df.loc[previous_df['Item'] == 'Daily Membership'])
+        previous_membership_count = len(previous_df)
+        print('Identifying month...')
+        previous_month = previous_df['Purchase Date'].head(1).str.split('/').str[0].values[0]
+        if previous_month == '1':
+            previous_month = 'January'
+        elif previous_month == '2':
+            previous_month = 'February'
+        elif previous_month == '3':
+            previous_month = 'March'
+        elif previous_month == '4':
+            previous_month = 'April'
+        elif previous_month == '5':
+            previous_month = 'May'
+        elif previous_month == '6':
+            previous_month = 'June'
+        elif previous_month == '7':
+            previous_month = 'July'
+        elif previous_month == '8':
+            previous_month = 'August'
+        elif previous_month == '9':
+            previous_month = 'September'
+        elif previous_month == '10':
+            previous_month = 'October'
+        elif previous_month == '11':
+            previous_month = 'November'
+        elif previous_month == '12':
+            previous_month = 'December'
+        else:
+            current_month = 'this month'
+        print('Calculating Number of Membership in second dataset...')
+        current_discover_count = len(current_df.loc[current_df['Item'] == 'Discover Membership'])
+        current_levelup_count = len(current_df.loc[current_df['Item'] == 'Level Up Membership'])
+        current_elevate_count = len(current_df.loc[current_df['Item'] == 'Elevate Membership'])
+        current_core_count = len(current_df.loc[current_df['Item'] == 'Core Membership'])
+        current_restore_count = len(current_df.loc[current_df['Item'] == 'Restore Membership'])
+        current_restorecouples_count = len(current_df.loc[current_df['Item'] == 'Restore Membership - Couples'])
+        current_wellness_count = len(current_df.loc[current_df['Item'] == 'Wellness Membership'])
+        current_wellnesscouples_count = len(current_df.loc[current_df['Item'] == 'Wellness Membership - Couples'])
+        current_daily_count = len(current_df.loc[current_df['Item'] == 'Daily Membership'])
+        current_membership_count = len(current_df)
+        print('Identifying month...')
+        current_month = current_df['Purchase Date'].head(1).str.split('/').str[0].values[0]
+        if current_month == '1':
+            current_month = 'January'
+        elif current_month == '2':
+            current_month = 'February'
+        elif current_month == '3':
+            current_month = 'March'
+        elif current_month == '4':
+            current_month = 'April'
+        elif current_month == '5':
+            current_month = 'May'
+        elif current_month == '6':
+            current_month = 'June'
+        elif current_month == '7':
+            current_month = 'July'
+        elif current_month == '8':
+            current_month = 'August'
+        elif current_month == '9':
+            current_month = 'September'
+        elif current_month == '10':
+            current_month = 'October'
+        elif current_month == '11':
+            current_month = 'November'
+        elif current_month == '12':
+            current_month = 'December'
+        else:
+            current_month = 'this month'
+        print('Identifying lost members, this could take a some time...')
+        merged_df = pd.merge(previous_df, current_df, on='Name', suffixes=('_prev', '_current'), how='outer', indicator=True)
+        lost_members = merged_df[merged_df['_merge'] == 'left_only'][['Name', 'Email_prev', 'Phone #_prev', 'Item_prev']].values.tolist()
+        print('Identifying members who are in both datasets, this could take a some time...')
+        overlap_members = []
+        for index, row1 in previous_df.iterrows():
+            for index, row2 in current_df.iterrows():
+                name1 = row1['Name']
+                name2 = row2['Name']
+                if name1 != name2:
+                    continue
+                else:
+                    my_list = [row1['Name'], row1['Email'], row1['Phone #'], row1['Item']]
+                    overlap_members.append(my_list)
+                    continue
+            continue
+        print('Configuring data...')
+        lost_members_df = pd.DataFrame(lost_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
+        overlap_members_df = pd.DataFrame(overlap_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
+        print('Dropping Duplicates...')
+        ## Dropping dulplicates
+        lost_members_df = lost_members_df.drop_duplicates(subset=['Name'])
+        overlap_members_df = overlap_members_df.drop_duplicates(subset=['Name'])
+        print('Compiling results and wrapping up...')
+        #time.sleep(3)
+
+        print('Here are your results')
+        print(f'Total number of all memberships in {previous_month}: {previous_membership_count}')
+        print(f'Number of Discover Memberships: {previous_discover_count}')
+        print(f'Number of Level Up Memberships: {previous_levelup_count}')
+        print(f'Number of Elevate Memberships: {previous_elevate_count}')
+        print(f'Number of Core Memberships: {previous_core_count}')
+        print(f'Number of Restore Memberships: {previous_restore_count}')
+        print(f'Number of Restore Couples Memberships: {previous_restorecouples_count}')
+        print(f'Number of Wellness Memberships: {previous_wellness_count}')
+        print(f'Number of Wellness Couples Memberships: {previous_wellnesscouples_count}')
+        print(f'Number of Daily Memberships: {previous_daily_count}')
+        print('')
+        print('')
+        print('')
+        print(f'Total number of all memberships in {current_month}: {current_membership_count}')
+        print(f'Number of Discover Memberships: {current_discover_count}')
+        print(f'Number of Level Up Memberships: {current_levelup_count}')
+        print(f'Number of Elevate Memberships: {current_elevate_count}')
+        print(f'Number of Core Memberships: {current_core_count}')
+        print(f'Number of Restore Memberships: {current_restore_count}')
+        print(f'Number of Restore Couples Memberships: {current_restorecouples_count}')
+        print(f'Number of Wellness Memberships: {current_wellness_count}')
+        print(f'Number of Wellness Couples Memberships: {current_wellnesscouples_count}')
+        print(f'Number of Daily Memberships: {current_daily_count}')
+        print('')
+        print('')
+        print('')
+        print('Here are all of your lost members between the two datasets')
+        print(lost_members_df)
+    return render_template("month_comparison.html", user=current_user, form=form, previous_membership_count=previous_membership_count, previous_discover_count=previous_discover_count, previous_levelup_count=previous_levelup_count, previous_elevate_count=previous_elevate_count, previous_core_count=previous_core_count, previous_restore_count=previous_restore_count, previous_restorecouples_count=previous_restorecouples_count, previous_wellness_count=previous_wellness_count, previous_wellnesscouples_count=previous_wellnesscouples_count, previous_daily_count=previous_daily_count, current_membership_count=current_membership_count, current_discover_count=current_discover_count, current_levelup_count=current_levelup_count, current_elevate_count=current_elevate_count, current_core_count=current_core_count, current_restore_count=current_restore_count, current_restorecouples_count=current_restorecouples_count, current_wellness_count=current_wellness_count, current_wellnesscouples_count=current_wellnesscouples_count, current_daily_count=current_daily_count)
 
 @views.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     date = date_time
+    if request.method == 'POST':
+        email = request.form.get('email')
+        feedback = request.form.get('feedback')
+        added_feedback = User_Feedback(email=email, feedback=feedback)
+        db.session.add(added_feedback)
+        db.session.commit()
+        flash("Thank you for the feedback! If I have any follow ups for you, I'll send you a message to the email you provided.", category='success')
+        return redirect(url_for('views.home'))
     return render_template("feedback.html", user=current_user, date=date)
 
