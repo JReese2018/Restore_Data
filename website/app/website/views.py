@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 #from website import date_time
 from datetime import datetime
-from .models import User, User_Feedback, Counter
+from .models import User, User_Feedback, Counter, Month_Comparison
 from sqlalchemy.sql.expression import func, select, desc
 from . import db
 import pandas as pd
@@ -31,6 +31,7 @@ date_time = now.strftime("%m/%d/%Y")
 views = Blueprint('views', __name__)
 
 @views.route('/')
+@login_required
 def home():
     name = current_user.username.capitalize()
     return render_template("home.html", user=current_user, name=name)
@@ -455,6 +456,11 @@ def month_comparison():
         print('')
         print('Here are all of your lost members between the two datasets')
         print(lost_members_df)
+
+
+        compare = Month_Comparison(previous_membership_count=previous_membership_count, previous_discover_count=previous_discover_count, previous_levelup_count=previous_levelup_count, previous_elevate_count=previous_elevate_count, previous_core_count=previous_core_count, previous_restore_count=previous_restore_count, previous_restorecouples_count=previous_restorecouples_count, previous_wellness_count=previous_wellness_count, previous_wellnesscouples_count=previous_wellnesscouples_count, previous_daily_count=previous_daily_count, current_membership_count=current_membership_count, current_discover_count=current_discover_count, current_levelup_count=current_levelup_count, current_elevate_count=current_elevate_count, current_core_count=current_core_count, current_restore_count=current_restore_count, current_restorecouples_count=current_restorecouples_count, current_wellness_count=current_wellness_count, current_wellnesscouples_count=current_wellnesscouples_count, current_daily_count=current_daily_count)
+        db.session.add(compare)
+        db.session.commit()
     return render_template("month_comparison.html", user=current_user, form=form, previous_membership_count=previous_membership_count, previous_discover_count=previous_discover_count, previous_levelup_count=previous_levelup_count, previous_elevate_count=previous_elevate_count, previous_core_count=previous_core_count, previous_restore_count=previous_restore_count, previous_restorecouples_count=previous_restorecouples_count, previous_wellness_count=previous_wellness_count, previous_wellnesscouples_count=previous_wellnesscouples_count, previous_daily_count=previous_daily_count, current_membership_count=current_membership_count, current_discover_count=current_discover_count, current_levelup_count=current_levelup_count, current_elevate_count=current_elevate_count, current_core_count=current_core_count, current_restore_count=current_restore_count, current_restorecouples_count=current_restorecouples_count, current_wellness_count=current_wellness_count, current_wellnesscouples_count=current_wellnesscouples_count, current_daily_count=current_daily_count)
 
 @views.route('/feedback', methods=['GET', 'POST'])
