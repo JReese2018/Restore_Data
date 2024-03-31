@@ -1,0 +1,35 @@
+<!--Add Nav Bar-->
+{% extends "base.html"%} 
+<!--Change Title of Page-->
+{% block title %}Spend Amount{% endblock %}
+<!--Add Content-->
+{%block content%} 
+
+<form method="POST" enctype="multipart/form-data">
+    <h1 style="text-align:center">Spend Amount/Big Spender Tool</h1>
+    <div class="container-fluid">    
+        <div class="card mt-5" id="signupCard">
+            <h5 class="card-header" style="text-align: center;">Upload your Spreadsheet</h5>
+            <div class="card-body">
+                <div class="row justify-content-center mb-2">
+                    <label>Upload File</label>
+                    <div class="col mt-1">
+                        {{ form.file(class="form-control") }}
+                        {% if form.file.errors %}
+                            <span style="color: red;">{{ form.file2.errors[0] }}</span>
+                        {% endif %}
+                    </div>     
+                </div>
+                <div class="mb-3">
+                    <label for="spend_amount" class="form-label">Spend Amount</label>
+                    <input type="number" class="form-control mt-1" id="spend_amount" placeholder="Only the Number" name="spend_amount">
+                  </div>
+                <div class="row">    
+                    {{ form.submit(class="btn btn-primary") }}
+                </div> 
+            </div>
+        </div>
+    </div>
+  </form>
+
+{% endblock %}

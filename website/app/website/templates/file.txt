@@ -5,10 +5,10 @@ Making data driven decisions is the reason why most businesses succeed.
 This page will serve as an overview of what each tool does, how it works, and potential use cases for them
 Disclaimer: Visually the program is not the greatest as I am not a UI designer. Functionally, it is.
 
-Credit Utilization
+<h5>Credit Utilization</h5>
 Tableau equips us with a credit balance report that can be used in different ways.
 Pulling that report and dumping it into here will save you time and get insights that you probably we're thinking about before.
-The average run time for the reports to be analyzed is <b>0.3 seconds</b>.
+The average runtime for the reports to be analyzed is <b>0.3 seconds</b>.
 This tool will give you a report with all of clients how have used a specifed percentage of their pack that they purchased.
 If you were to say 60% utilization, the report will give you packs that have been at least 60% used.
 The reason that I picked percentages is because it has we (FL005) have seen a trend that the higher utilization there is, the more likely they are to come back when reaching out, thus giving us more opputunity to sell to them.
@@ -22,10 +22,31 @@ If you want to make a sale by the end of the month, you might want to start reac
 I can't give you a specific date for every service because everone is different but beginning/middle of the month is a great time to use this tool. 
 After uploading the file, the program will redirect you to another page with the results on a table as well as the option to download the file.
 The table will have the clients Full Name, Email, Phone Number, the pack they purchased, and how many are remaining
-When downloading the data, it will coome with a "First Contact Rep Initials" column, "Second Contact Rep Initials" column, "Third Contact Rep Initials" column, and a "Notes" column.
+When downloading the data, it will come with a "First Contact Rep Initials" column, "Second Contact Rep Initials" column, "Third Contact Rep Initials" column, and a "Notes" column.
 
 
 
-Month Comparison
+Membership Month Comparison
+In recent months, there is has been a clear shift into focus of selling memberships. FTVs are great to sell to but old members who are no longer members can also be potential leads to reach out to with a great welcome back deal.
+This report will grab any two months that you choose and compare them to see who is no longer a member (Lost Members).
+You can use this tool to see who were members this month a year ago vs today (comparing January 2023 to January 2024)
+It is also definitely possible to grab a list of all your members that you had in 2023 and compare them to the last full month (so if you're in March 2024, you would compare with a list from February 2024). It will take a good minute but it will save you <b>hours</b>
+The average runtime for this tool varies because datasets can be different sizes. Clearly, the larger ones can take longer.
+Comparsion models are naturally going to be slower so be aware of that. It is all worht it though. Doing it manually can take a long time and is very unfun to do
+
+When the model is done comparing, it show you some statistics on the amount of memberships on the months that you picked. Ex: "Number of Discover Memberships"
+NOTE: The model looks at the number of transactions meaning if you picked more than one month, the numbers will be inflated. For exmaple, let's say picking two months from the report you pulled yields 650 members. The program will say "Total number of all memberships: 650". This does not mean that you had 650 members at one time. It means you had 650 membership transactions across the span of those 2 months.
+
+After you are redirected to the stats page, you will be presented with option to download the Lost Members Dataset.
+When downloading the data, you will get a list with the client's Name, Email, Phone Number, and what membership they were on.
+It will also come with a "First Contact Rep Initials" column, "Second Contact Rep Initials" column, "Third Contact Rep Initials" column, and a "Notes" column.
+
+
+
 Spend Amount [IN DEVELOPMENT]
+During crunch time (EOM), it is good to know how your big spenders are.
+The last week of the month, Pinecrest typically uses this script to pull all the data from a certain time frame to see where oppurtunity lies
+Numbers can very studio to studio but Pinecrest like to look at the <b>last 3 months</b> with purchases above <b>$350</b>.
+There is no science or theory behind those numbers, we just find that that is good number to start
+However, with this script you can pick any number you want.
 Promotions [NO LONGER SUPPORTED]

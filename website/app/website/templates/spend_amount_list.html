@@ -1,0 +1,21 @@
+<!--Add Nav Bar-->
+{% extends "base.html"%} 
+<!--Change Title of Page-->
+{% block title %}List{% endblock %}
+<!--Add Content-->
+{%block content%} 
+<form method="POST">
+    <div class="container">
+        <h1 style="text-align: center;">Here is your List with transactions above ${{ amount }}</h1>
+        <p style="text-align: center;">Click the button below if you would like to download this list!</p>
+        <div class="container-fluid" style="text-align: center">
+            <div>
+                <button type="sumbit" class="btn btn-primary mt-1 mb-2" role="button" id="home_page_button">Download Lost Members Dataset</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            {{ table|safe }}
+        </div>
+    </div>
+</form>
+{% endblock %}

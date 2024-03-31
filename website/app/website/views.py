@@ -104,13 +104,14 @@ def credit_utilization():
             core_list_df['Third Contact Rep Initials'] = ''
             core_list_df['Notes'] = ''
             print('Saving...')
-            filename = (f'Skin_Health_{converted_utilization}_{date_time}.xlsx')
-            excel_data = io.BytesIO()
-            core_list_df.to_excel(excel_data, index=False)
-            excel_data.seek(0)
-            #return send_file(excel_data, as_attachment=True, download_name=filename)
-        
-            ## We need to figure out how to get the program to download the csv and redirect to table page
+
+            temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
+            filename = temp_file.name
+            skin_list_df.to_excel(filename, index=False)
+            temp_file.close()
+            download_filename = (f'{service_type} {converted_utilization} {date_time}.xlsx')
+            session['file_path'] = filename
+            session['download_filename'] = download_filename
             return redirect(url_for('views.credit_utilization_list', table=core_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
             
         elif service_type == 'Medical':
@@ -199,14 +200,15 @@ def credit_utilization():
             medical_text_list['Third Contact Rep Initials'] = ''
             medical_text_list['Notes'] = ''
             print('Saving...')
-            filename = (f'Skin_Health_{converted_utilization}_{date_time}.xlsx')
-            excel_data = io.BytesIO()
-            medical_text_list.to_excel(excel_data, index=False)
-            excel_data.seek(0)
-            return send_file(excel_data, as_attachment=True, download_name=filename)
-        
-            ## We need to figure out how to get the program to download the csv and redirect to table page
-            #return redirect(url_for('views.credit_utilization_list', table=medical_text_list_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
+
+            temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
+            filename = temp_file.name
+            skin_list_df.to_excel(filename, index=False)
+            temp_file.close()
+            download_filename = (f'{service_type} {converted_utilization} {date_time}.xlsx')
+            session['file_path'] = filename
+            session['download_filename'] = download_filename
+            return redirect(url_for('views.credit_utilization_list', table=medical_text_list_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
             
         elif service_type == 'Skin Health':
             df = pd.read_csv(uploaded_file.stream)
@@ -266,10 +268,6 @@ def credit_utilization():
             session['file_path'] = filename
             session['download_filename'] = download_filename
             return redirect(url_for('views.credit_utilization_list', table=skin_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
-
-        
-            ## We need to figure out how to get the program to download the csv and redirect to table page
-            #return redirect(url_for('views.credit_utilization_list', table=skin_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
 
     return render_template("credit_utilization.html", user=current_user, form=form)
 
@@ -479,6 +477,79 @@ def month_comparison_list():
         return send_file(file_path, as_attachment=True, download_name=download_filename)
     
     return render_template('month_comparison_list.html', user=current_user, displays=displays)
+
+@views.route('/spend-amount', methods=['GET', 'POST'])
+@login_required
+def spend_amount():
+    form = UploadFileForm()
+
+    if request.method == 'POST':
+        spend_amount = request.form.get('spend_amount')
+        uploaded_file = form.file.data
+        ## Read CSV
+        df = pd.read_csv(uploaded_file)
+        ## Dropping unnecessary columns
+        df = df.drop(columns=['Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Credit Used', 'Quantity'])
+        ## Combining names, reoragninzing and renaming
+        df['Name'] = df['First Name'] + ' ' + df['Last Name']
+        df = df.drop(columns=['First Name', 'Last Name'])
+        df = df.rename(columns={'Phone #': 'Phone Number'})
+        df = df.rename(columns={'Gross adjusted Revenue': 'Amount Paid'})
+        df = df[['Name', 'Phone Number', 'Email', 'Item', 'Amount Paid', 'Purchase Date']]
+        ## Cleaning data
+        df = df.dropna()
+        ## Getting rid of membership transactions
+        no_membership = []
+        counter = 1
+        for index, row in df.iterrows():
+            if 'Membership' in row['Item']:
+                counter + 1
+                continue
+            else:
+                my_list = [row['Name'], row['Phone Number'], row['Email'], row['Item'], row['Amount Paid'], row['Purchase Date']]
+                no_membership.append(my_list)
+                continue
+        ## Turning list into dataframe
+        no_membership_df = pd.DataFrame(no_membership, columns=['Name', 'Phone Number', 'Email', 'Item', 'Amount Paid', 'Purchase Date'])
+        ## Asking User what amount they want to see
+        above_amount = []
+        amount = spend_amount
+        int_amount = int(amount)
+        for index, row in no_membership_df.iterrows():
+            if row['Amount Paid'] < int_amount:
+                continue
+            else:
+                my_list = [row['Name'], row['Phone Number'], row['Email'], row['Item'], row['Amount Paid'], row['Purchase Date']]
+                above_amount.append(my_list)
+        ## Creating final dataframe
+        above_amount_df = pd.DataFrame(above_amount, columns=['Name', 'Phone Number', 'Email', 'Item', 'Amount Paid', 'Purchase Date'])
+        ## Ordering from the largest to smallest
+        above_amount_df = above_amount_df.sort_values('Amount Paid', ascending=False)
+        
+        temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
+        filename = temp_file.name
+        above_amount_df.to_excel(filename, index=False)
+        temp_file.close()
+        download_filename = (f'Spend amount above {amount} {date_time}.xlsx')
+        session['file_path'] = filename
+        session['download_filename'] = download_filename
+        session['above_amount_table'] = above_amount_df.to_html(classes='table table-striped')
+
+        return redirect(url_for('views.spend_amount_list', amount=amount))
+    
+    return render_template('spend_amount.html', user=current_user, form=form)
+
+@views.route('/spend-amount/list', methods=['GET', 'POST'])
+@login_required
+def spend_amount_list():
+    table_html = session.pop('above_amount_table', None)
+    amount = request.args.get('amount', '')
+    if request.method == 'POST':
+        file_path = session.get('file_path')
+        download_filename = session.get('download_filename')
+        return send_file(file_path, as_attachment=True, download_name=download_filename)
+    
+    return render_template('spend_amount_list.html', user=current_user, table=table_html, amount=amount)
 
 @views.route('/feedback', methods=['GET', 'POST'])
 def feedback():
