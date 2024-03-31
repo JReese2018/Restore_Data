@@ -13,6 +13,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150), nullable=False)
+    counter = db.relationship('Counter')
+    month_comparison = db.relationship('Month_Comparison')
 
 class User_Feedback(db.Model):
     feedback_id = db.Column(db.Integer, primary_key=True)
@@ -49,4 +51,6 @@ class Month_Comparison(db.Model):
     current_wellness_count = db.Column(db.Integer, nullable=False)
     current_wellnesscouples_count = db.Column(db.Integer, nullable=False)
     current_daily_count = db.Column(db.Integer, nullable=False)
+    previous_month = db.Column(db.String(150), nullable=False)
+    current_month = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

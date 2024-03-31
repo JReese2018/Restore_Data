@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
+from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file, session
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
@@ -9,6 +9,7 @@ from sqlalchemy.sql.expression import func, select, desc
 from . import db
 import pandas as pd
 import io
+import tempfile
 
 # This file is your backend to all your pages on your app. I left an example on how
 # to post things to the database. This also shows how to use the flask functions like
@@ -256,22 +257,31 @@ def credit_utilization():
             skin_list_df['Third Contact Rep Initials'] = ''
             skin_list_df['Notes'] = ''
             print('Saving...')
-            filename = (f'Skin_Health_{converted_utilization}_{date_time}.xlsx')
-            excel_data = io.BytesIO()
-            skin_list_df.to_excel(excel_data, index=False)
-            excel_data.seek(0)
-            return send_file(excel_data, as_attachment=True, download_name=filename)
+
+            temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
+            filename = temp_file.name
+            skin_list_df.to_excel(filename, index=False)
+            temp_file.close()
+            download_filename = (f'{service_type} {converted_utilization} {date_time}.xlsx')
+            session['file_path'] = filename
+            session['download_filename'] = download_filename
+            return redirect(url_for('views.credit_utilization_list', table=skin_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
+
         
             ## We need to figure out how to get the program to download the csv and redirect to table page
             #return redirect(url_for('views.credit_utilization_list', table=skin_list_df_reset.to_html(classes='table table-striped'), utilization=converted_utilization))
 
     return render_template("credit_utilization.html", user=current_user, form=form)
 
-@views.route('/credit-utilization/list', methods=['GET'])
+@views.route('/credit-utilization/list', methods=['GET', 'POST'])
 @login_required
 def credit_utilization_list():
     table = request.args.get('table', '')
     utilization = request.args.get('utilization', '')
+    if request.method == 'POST':
+        file_path = session.get('file_path')
+        download_filename = session.get('download_filename')
+        return send_file(file_path, as_attachment=True, download_name=download_filename)
     return render_template('credit_utilization_list.html', user=current_user, table=table, utilization=utilization)
 
 ## This might be scrapped because tableu has a tab that can be used to get the same data that I was going to do I think
@@ -286,36 +296,14 @@ def promotions():
 def month_comparison():
     form = ComparisonFileForm()
     previous = form.file1.data
-    current =form.file2.data
-
-    previous_membership_count = 'N/A'
-    previous_discover_count = 'N/A'
-    previous_levelup_count = 'N/A'
-    previous_elevate_count = 'N/A'
-    previous_core_count = 'N/A'
-    previous_restore_count = 'N/A'
-    previous_restorecouples_count = 'N/A'
-    previous_wellness_count = 'N/A'
-    previous_wellnesscouples_count = 'N/A'
-    previous_daily_count = 'N/A'
-
-    current_membership_count = 'N/A'
-    current_discover_count = 'N/A'
-    current_levelup_count = 'N/A'
-    current_elevate_count = 'N/A'
-    current_core_count = 'N/A'
-    current_restore_count = 'N/A'
-    current_restorecouples_count = 'N/A'
-    current_wellness_count = 'N/A'
-    current_wellnesscouples_count = 'N/A'
-    current_daily_count = 'N/A'
+    current = form.file2.data
 
     if request.method == 'POST':
         previous_df = pd.read_csv(previous)
         current_df = pd.read_csv(current)
         print('Cleaning data...')
         previous_df = previous_df.drop(columns=['Studio Code', 'Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
-        current_df = current_df.drop(columns=['Studio Code', 'Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
+        current_df = current_df.drop(columns=['Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
         print('Creating new column for first and last names...')
         current_df['Name'] = current_df['First Name'] + ' ' + current_df['Last Name']
         current_df = current_df.drop(columns=['First Name', 'Last Name'])
@@ -361,7 +349,7 @@ def month_comparison():
         elif previous_month == '12':
             previous_month = 'December'
         else:
-            current_month = 'this month'
+            current_month = 'Month'
         print('Calculating Number of Membership in second dataset...')
         current_discover_count = len(current_df.loc[current_df['Item'] == 'Discover Membership'])
         current_levelup_count = len(current_df.loc[current_df['Item'] == 'Level Up Membership'])
@@ -400,7 +388,7 @@ def month_comparison():
         elif current_month == '12':
             current_month = 'December'
         else:
-            current_month = 'this month'
+            current_month = 'Month'
         print('Identifying lost members, this could take a some time...')
         merged_df = pd.merge(previous_df, current_df, on='Name', suffixes=('_prev', '_current'), how='outer', indicator=True)
         lost_members = merged_df[merged_df['_merge'] == 'left_only'][['Name', 'Email_prev', 'Phone #_prev', 'Item_prev']].values.tolist()
@@ -420,12 +408,13 @@ def month_comparison():
         print('Configuring data...')
         lost_members_df = pd.DataFrame(lost_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
         overlap_members_df = pd.DataFrame(overlap_members, columns=['Name', 'Email', 'Phone #', 'Membership'])
+
+        
         print('Dropping Duplicates...')
         ## Dropping dulplicates
         lost_members_df = lost_members_df.drop_duplicates(subset=['Name'])
         overlap_members_df = overlap_members_df.drop_duplicates(subset=['Name'])
         print('Compiling results and wrapping up...')
-        #time.sleep(3)
 
         print('Here are your results')
         print(f'Total number of all memberships in {previous_month}: {previous_membership_count}')
@@ -457,11 +446,39 @@ def month_comparison():
         print('Here are all of your lost members between the two datasets')
         print(lost_members_df)
 
-
-        compare = Month_Comparison(previous_membership_count=previous_membership_count, previous_discover_count=previous_discover_count, previous_levelup_count=previous_levelup_count, previous_elevate_count=previous_elevate_count, previous_core_count=previous_core_count, previous_restore_count=previous_restore_count, previous_restorecouples_count=previous_restorecouples_count, previous_wellness_count=previous_wellness_count, previous_wellnesscouples_count=previous_wellnesscouples_count, previous_daily_count=previous_daily_count, current_membership_count=current_membership_count, current_discover_count=current_discover_count, current_levelup_count=current_levelup_count, current_elevate_count=current_elevate_count, current_core_count=current_core_count, current_restore_count=current_restore_count, current_restorecouples_count=current_restorecouples_count, current_wellness_count=current_wellness_count, current_wellnesscouples_count=current_wellnesscouples_count, current_daily_count=current_daily_count)
+        user_id = current_user.id
+        compare = Month_Comparison(previous_membership_count=previous_membership_count, previous_discover_count=previous_discover_count, previous_levelup_count=previous_levelup_count, previous_elevate_count=previous_elevate_count, previous_core_count=previous_core_count, previous_restore_count=previous_restore_count, previous_restorecouples_count=previous_restorecouples_count, previous_wellness_count=previous_wellness_count, previous_wellnesscouples_count=previous_wellnesscouples_count, previous_daily_count=previous_daily_count, current_membership_count=current_membership_count, current_discover_count=current_discover_count, current_levelup_count=current_levelup_count, current_elevate_count=current_elevate_count, current_core_count=current_core_count, current_restore_count=current_restore_count, current_restorecouples_count=current_restorecouples_count, current_wellness_count=current_wellness_count, current_wellnesscouples_count=current_wellnesscouples_count, current_daily_count=current_daily_count, previous_month=previous_month, current_month=current_month, user_id=user_id)
         db.session.add(compare)
         db.session.commit()
-    return render_template("month_comparison.html", user=current_user, form=form, previous_membership_count=previous_membership_count, previous_discover_count=previous_discover_count, previous_levelup_count=previous_levelup_count, previous_elevate_count=previous_elevate_count, previous_core_count=previous_core_count, previous_restore_count=previous_restore_count, previous_restorecouples_count=previous_restorecouples_count, previous_wellness_count=previous_wellness_count, previous_wellnesscouples_count=previous_wellnesscouples_count, previous_daily_count=previous_daily_count, current_membership_count=current_membership_count, current_discover_count=current_discover_count, current_levelup_count=current_levelup_count, current_elevate_count=current_elevate_count, current_core_count=current_core_count, current_restore_count=current_restore_count, current_restorecouples_count=current_restorecouples_count, current_wellness_count=current_wellness_count, current_wellnesscouples_count=current_wellnesscouples_count, current_daily_count=current_daily_count)
+
+        print('Adding columns...')
+        lost_members_df['First Contact Rep Initials'] = ''
+        lost_members_df['Second Contact Rep Initials'] = ''
+        lost_members_df['Third Contact Rep Initials'] = ''
+        lost_members_df['Notes'] = ''
+
+        temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
+        filename = temp_file.name
+        lost_members_df.to_excel(filename, index=False)
+        temp_file.close()
+        download_filename = (f'Lost Members {previous_month} to {current_month} {date_time}.xlsx')
+        session['file_path'] = filename
+        session['download_filename'] = download_filename
+        return redirect(url_for('views.month_comparison_list'))
+
+    return render_template("month_comparison.html", user=current_user, form=form)
+
+
+@views.route('/month-comparison/list', methods=['GET', 'POST'])
+@login_required
+def month_comparison_list():
+    displays = Month_Comparison.query.filter_by(user_id=current_user.id).order_by(desc(Month_Comparison.month_comparison_id)).limit(1)
+    if request.method == 'POST':
+        file_path = session.get('file_path')
+        download_filename = session.get('download_filename')
+        return send_file(file_path, as_attachment=True, download_name=download_filename)
+    
+    return render_template('month_comparison_list.html', user=current_user, displays=displays)
 
 @views.route('/feedback', methods=['GET', 'POST'])
 def feedback():

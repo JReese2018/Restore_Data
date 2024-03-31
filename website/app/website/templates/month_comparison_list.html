@@ -7,34 +7,12 @@
 
 <form method="POST" enctype="multipart/form-data">
     <h1 style="text-align:center">Month Comparison</h1>
-    <div class="container-fluid">    
-        <div class="card mt-5 mb-5" id="signupCard">
-            <h5 class="card-header" style="text-align: center;">Upload your Spreadsheet</h5>
-            <div class="card-body">
-                <div class="row justify-content-center mb-2">
-                    <label class="mb-1">Upload Previos Month File</label>
-                    <div class="col">                  
-                        {{ form.file1(class="form-control") }}
-                        {% if form.file1.errors %}
-                            <span style="color: red;">{{ form.file1.errors[0] }}</span>
-                        {% endif %}
-                    </div>     
-                </div>
-                <div class="row justify-content-center mb-2">
-                    <label class="mb-1">Upload Next Month File</label>
-                    <div class="col">
-                        {{ form.file2(class="form-control") }}
-                        {% if form.file2.errors %}
-                            <span style="color: red;">{{ form.file2.errors[0] }}</span>
-                        {% endif %}
-                    </div>     
-                </div>
-                <div class="row">    
-                    {{ form.submit(class="btn btn-primary") }}
-                </div> 
+        <h5 style="text-align: center;">Below are the statistics of both datasets that you have provided. A file has been created with the lost members between the two datasets</h5>
+        <div class="container-fluid" style="text-align: center">
+            <div>
+                <button type="sumbit" class="btn btn-primary mt-1 mb-2" role="button" id="home_page_button">Download Lost Members Dataset</button>
             </div>
         </div>
-        <p style="text-align: center;">When you press the "Upload File" button, a file with all the lost members when comparing the two months will download.</p>
         {% for display in displays %}
         <div class="row container-fluid">
         <div class="card" id="month_card">
@@ -73,7 +51,6 @@
         </div>
         </div>
         <br>
-        <p>Comparison Models can sometimes take a longer time to process espcialy when more data is attached to it. Please be paitent as tests have shown that the program can take as long as a minute to operate! - Reese</p>
     </div>
     {% endfor %}
   </form>

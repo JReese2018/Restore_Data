@@ -1,20 +1,31 @@
-previous_membership_count
-    previous_discover_count
-    previous_levelup_count
-    previous_elevate_count
-    previous_core_count
-    previous_restore_count
-    previous_restorecouples_count
-    previous_wellness_count
-    previous_wellnesscouples_count
-    previous_daily_count
-    current_membership_count
-    current_discover_count
-    current_levelup_count
-    current_elevate_count
-    current_core_count
-    current_restore_count
-    current_restorecouples_count
-    current_wellness_count
-    current_wellnesscouples_count
-    current_daily_count
+Welcome to the Report Optimizer
+Since Restore's Tableau does not come fully equip with a lot of tools to propel out individual studios forward, I have taken matters into my own hands.
+These tools have proven to work in the Pinecrest (FL005) studio, getting us more booked appoints from the credit utilizer, reaching out to lost members, as well as others.
+Making data driven decisions is the reason why most businesses succeed.
+This page will serve as an overview of what each tool does, how it works, and potential use cases for them
+Disclaimer: Visually the program is not the greatest as I am not a UI designer. Functionally, it is.
+
+Credit Utilization
+Tableau equips us with a credit balance report that can be used in different ways.
+Pulling that report and dumping it into here will save you time and get insights that you probably we're thinking about before.
+The average run time for the reports to be analyzed is <b>0.3 seconds</b>.
+This tool will give you a report with all of clients how have used a specifed percentage of their pack that they purchased.
+If you were to say 60% utilization, the report will give you packs that have been at least 60% used.
+The reason that I picked percentages is because it has we (FL005) have seen a trend that the higher utilization there is, the more likely they are to come back when reaching out, thus giving us more opputunity to sell to them.
+For example: Jane purchased 10 Base IVs 6 months ago and only used 3 of them while Kevin also purchased 10 Base IVs 2 months ago and has used 6 of them. Who do you think is more likely to come back to do another IV?
+In this example, we are looking at 30% utilization vs 60%. We always want people to use thier credits but focusing on those who are already coming and getting them to continue to come can be the difference from hitting goal and not.
+
+<b>We recommend using 60% utilization when using this tool to download the dataset</b>
+60% means that this individual pack is used a good amount and that the person purchased it actually enjoys it
+<b>We also recommend strategizing when to reach out to people</b>
+If you want to make a sale by the end of the month, you might want to start reaching out to people in the middle of the month so they can use the rest of their credits and re-up on anohter pack.
+I can't give you a specific date for every service because everone is different but beginning/middle of the month is a great time to use this tool. 
+After uploading the file, the program will redirect you to another page with the results on a table as well as the option to download the file.
+The table will have the clients Full Name, Email, Phone Number, the pack they purchased, and how many are remaining
+When downloading the data, it will coome with a "First Contact Rep Initials" column, "Second Contact Rep Initials" column, "Third Contact Rep Initials" column, and a "Notes" column.
+
+
+
+Month Comparison
+Spend Amount [IN DEVELOPMENT]
+Promotions [NO LONGER SUPPORTED]
