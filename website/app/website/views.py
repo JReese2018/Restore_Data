@@ -531,6 +531,8 @@ def spend_amount():
         above_amount_df.to_excel(filename, index=False)
         temp_file.close()
         download_filename = (f'Spend amount above {amount} {date_time}.xlsx')
+        ## Testing session.clear() method
+        session.clear()
         session['file_path'] = filename
         session['download_filename'] = download_filename
         session['above_amount_table'] = above_amount_df.to_html(classes='table table-striped')
