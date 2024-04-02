@@ -3,13 +3,13 @@ Since Restore's Tableau does not come fully equip with a lot of tools to propel 
 These tools have proven to work in the Pinecrest (FL005) studio, getting us more booked appoints from the credit utilizer, reaching out to lost members, as well as others.
 Making data driven decisions is the reason why most businesses succeed.
 This page will serve as an overview of what each tool does, how it works, and potential use cases for them
-Disclaimer: Visually the program is not the greatest as I am not a UI designer. Functionally, it is.
+Disclaimer: Visually the program is not the greatest as I am not a UI designer. Functionally, it is. If any UX/UI designer wants to tackle this project to add to thier portfolio, send me an email (jreese@restore.com) and I will send you the html and css source docs
 
-<h5>Credit Utilization</h5>
+<h5>Credit Utilization</h5> (HyperLink this)
 Tableau equips us with a credit balance report that can be used in different ways.
 Pulling that report and dumping it into here will save you time and get insights that you probably we're thinking about before.
-The average runtime for the reports to be analyzed is <b>0.3 seconds</b>.
-This tool will give you a report with all of clients how have used a specifed percentage of their pack that they purchased.
+The average runtime for the reports to be analyzed is <b>less than a second</b>.
+This tool will give you a report with all the clients who have used a specifed percentage of their pack that they purchased.
 If you were to say 60% utilization, the report will give you packs that have been at least 60% used.
 The reason that I picked percentages is because it has we (FL005) have seen a trend that the higher utilization there is, the more likely they are to come back when reaching out, thus giving us more opputunity to sell to them.
 For example: Jane purchased 10 Base IVs 6 months ago and only used 3 of them while Kevin also purchased 10 Base IVs 2 months ago and has used 6 of them. Who do you think is more likely to come back to do another IV?
@@ -18,15 +18,15 @@ In this example, we are looking at 30% utilization vs 60%. We always want people
 <b>We recommend using 60% utilization when using this tool to download the dataset</b>
 60% means that this individual pack is used a good amount and that the person purchased it actually enjoys it
 <b>We also recommend strategizing when to reach out to people</b>
-If you want to make a sale by the end of the month, you might want to start reaching out to people in the middle of the month so they can use the rest of their credits and re-up on anohter pack.
+If you want to make a sale by the end of the month, you might want to start reaching out to people in the middle of the month so they can use the rest of their credits and re-up on another pack.
 I can't give you a specific date for every service because everone is different but beginning/middle of the month is a great time to use this tool. 
 After uploading the file, the program will redirect you to another page with the results on a table as well as the option to download the file.
-The table will have the clients Full Name, Email, Phone Number, the pack they purchased, and how many are remaining
+The table will have the clients Full Name, Email, Phone Number, the pack they purchased, and how many credits are remaining
 When downloading the data, it will come with a "First Contact Rep Initials" column, "Second Contact Rep Initials" column, "Third Contact Rep Initials" column, and a "Notes" column.
 
 
 
-Membership Month Comparison
+Membership Month Comparison(HyperLink this)
 In recent months, there is has been a clear shift into focus of selling memberships. FTVs are great to sell to but old members who are no longer members can also be potential leads to reach out to with a great welcome back deal.
 This report will grab any two months that you choose and compare them to see who is no longer a member (Lost Members).
 You can use this tool to see who were members this month a year ago vs today (comparing January 2023 to January 2024)
@@ -41,12 +41,53 @@ After you are redirected to the stats page, you will be presented with option to
 When downloading the data, you will get a list with the client's Name, Email, Phone Number, and what membership they were on.
 It will also come with a "First Contact Rep Initials" column, "Second Contact Rep Initials" column, "Third Contact Rep Initials" column, and a "Notes" column.
 
+<h2>Overlapping Members</h2>
+When this tool is used, a list of overlapping members is also created. This pretty much means if someone is detected on both uploaded files, it means that they had an autopay go through in both months that were picked.
+So it will throw them in a list. This is pretty much the exact opposite of this tool was originally created to do.
+At the moment, the overlapping members list is created but it can not be accessed by the user meaning it virtually useless right now.
+However, if I become aware of a use case for that list, I will update the code to make that list accessable and useable.
 
-
-Spend Amount [IN DEVELOPMENT]
+Spend Amount [IN DEVELOPMENT](HyperLink this)
 During crunch time (EOM), it is good to know how your big spenders are.
 The last week of the month, Pinecrest typically uses this script to pull all the data from a certain time frame to see where oppurtunity lies
 Numbers can very studio to studio but Pinecrest like to look at the <b>last 3 months</b> with purchases above <b>$350</b>.
 There is no science or theory behind those numbers, we just find that that is good number to start
-However, with this script you can pick any number you want.
+However, with this tool you can pick any number you want.
+
+
 Promotions [NO LONGER SUPPORTED]
+
+For Testers
+If you are coming in to try the 
+
+[Should give a testers key and allow the key to be used once]
+[So like create a 4 digit code that you can give the person(s) who want to try it and give that code a one time use]
+[When they aquire the key, they should be provided with the dataet from Pinecrest]
+
+My Thoughts on this project
+When I announced my internsip with the University of Miami as a Sports Scientist/Data Analyst, my committment to Restore was questioned despite showing no signs of fall off prior to my announcement (I started working with the University months prior the announcement by the way).
+There I learn a lot of different ways to analyze, clean, and restructure data in order for it to be useable and actionable. Most of the concpets I picked up there are actually being used within these tools.
+I could easily stay within my job description (which was very clearly laid out to me in a meeting with my regional manager) and expect our Team of "Data Analysts" to figure these things out in hopes that our overhead could allow us to worry about what is happening in our store.
+I'm missing time spekaing and connecting with our clients becuase I have to be worried about a list here and a spreadsheet there.
+It got to a point where I decided "Screw it, I'll do it myself" and created a <b>fully loaded program</b> that you are only seeing <i>part</i> of. 
+These tools have helped us (FL005) make a couple thousand dollars extra a month. If it can do that for us, I can only imagine how the rest of the corporate setting would perform using some of these.
+The All-Staff and the FTV things are cool and in theory are great ideas. But in my humble opinion, that data is only useful for corporate (likely for evaluations and things like that).
+To be frank, I feel like the FTV has done more damage than good in my individual studio, hearing feedback that it has effectively turned the reps not only against each other but against us (managers). "Feels like a competition" is the most common piece of feedback I have gotten on it
+
+How about giving us things like a <a href>Credit Utilization Report<a> or a <a href>Big Spender Report<a>?  Instead of worrying about who's hitting their goals, just help us hit our goals.
+The only feedback i have gotten from one of my supiriors is "Let's figure out why we arent hitting our goals." I believe those conversations should be geared more towards "Let me help you reach your goal." I thought that was the point of having a corporate system: for support.
+It would great if these things were already done for us instead of depending on Reps or on us to turn into Data Analyst. I would really be interested to know what Restore's Tech/Data team works on on a day to day basis.
+This project was meant to only be used by me, Reese - FL005 AGM, to give us an advantage on the insights using data. We're always pressured to hit certain marks (which is okay by the way, it's our job). However, this pressure has called some of us to go out of our job descripton just to scratch the surface
+I know and understand that the expectation is not for everyone to understand how to comprehend data, but we are expected to hit goals. It is expected of us to be great sellers, be customer service reps, fill out every tracker, run all floor operations, clean, and everything in between (sometimes eveything beyond).
+Now they are expecting us to be able to sift through data and make something of it. Granted, sometimes we are given direction but there is only so much direction we are given.
+Maybe if the reps were incentivised with <i>commision based payrate</i>, they would be more interested in looking into the data to make more sales. But that is another topic for another day.
+Nevertheless, this is why this tool was made. Becuase there is already a lot of stress put on the reps as it is and I don't think it is very fair for them to have to do all of that. It fosters a work environment where everyone is upset us! (Management)
+
+Pinecrest is never praised for what we do. And we are okay with that. Praise is not what we seek. A certain studio (no shade to this studio by the way, you guys are doing great!!!) was put in a slack becuase they made $3500 in one day...
+Pinecrest made $8284 at the end of March 2024 and if it wasn't for my GM, nobody would have known. That same day, a regional manger shouted out New York's success for crossing the $100k threshold, a mark Pinecrest crossed a day before (shout out to all the New York Studios, you guys are killing it!!!).
+For that reason, I have decided that against sharing this program for this long. We have been amongst the best performing studios for a very long time now but that does not seem to matter. If you're going to keep us out of the spotlight, don't put us under a magnifying glass. We'll be fine either way.
+If this program is something that you believe will benefit another studio, you are more than welcome to reach out.
+
+
+VVV Don't include VVV
+With respect, if I can make this all by myself, I'm sure a whole team of techys (who are getting paid by the way) could've do this with similar and [hopefully] better result.

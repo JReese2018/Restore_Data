@@ -107,7 +107,7 @@ def credit_utilization():
 
             temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
             filename = temp_file.name
-            skin_list_df.to_excel(filename, index=False)
+            core_list_df.to_excel(filename, index=False)
             temp_file.close()
             download_filename = (f'{service_type} {converted_utilization} {date_time}.xlsx')
             session['file_path'] = filename
@@ -203,7 +203,7 @@ def credit_utilization():
 
             temp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
             filename = temp_file.name
-            skin_list_df.to_excel(filename, index=False)
+            medical_text_list.to_excel(filename, index=False)
             temp_file.close()
             download_filename = (f'{service_type} {converted_utilization} {date_time}.xlsx')
             session['file_path'] = filename
