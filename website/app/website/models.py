@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150), nullable=False)
     counter = db.relationship('Counter')
     month_comparison = db.relationship('Month_Comparison')
+    credit_utilization = db.relationship('Credit_Utilization')
 
 class User_Feedback(db.Model):
     feedback_id = db.Column(db.Integer, primary_key=True)
@@ -53,4 +54,14 @@ class Month_Comparison(db.Model):
     current_daily_count = db.Column(db.Integer, nullable=False)
     previous_month = db.Column(db.String(150), nullable=False)
     current_month = db.Column(db.String(150), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Credit_Utilization(db.Model):
+    credit_utilization_id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.Integer, nullable=False)
+    credit_description = db.Column(db.String(100), nullable=False)
+    remaining_credits = db.Column(db.String(100), nullable=False)
+    entry_group_number = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

@@ -64,11 +64,11 @@ If you are coming in to try the
 [So like create a 4 digit code that you can give the person(s) who want to try it and give that code a one time use]
 [When they aquire the key, they should be provided with the dataet from Pinecrest]
 
-My Thoughts on this project
-When I announced my internsip with the University of Miami as a Sports Scientist/Data Analyst, my committment to Restore was questioned despite showing no signs of fall off prior to my announcement (I started working with the University months prior the announcement by the way).
+My Thoughts on this Project
+When I announced my internsip with the University of Miami as a Sports Scientist/Data Analyst, my committment to Restore was questioned despite showing no signs of fall off before to my announcement (I started working with the University months prior the announcement by the way).
 There I learn a lot of different ways to analyze, clean, and restructure data in order for it to be useable and actionable. Most of the concpets I picked up there are actually being used within these tools.
-I could easily stay within my job description (which was very clearly laid out to me in a meeting with my regional manager) and expect our Team of "Data Analysts" to figure these things out in hopes that our overhead could allow us to worry about what is happening in our store.
-I'm missing time spekaing and connecting with our clients becuase I have to be worried about a list here and a spreadsheet there.
+I could easily stay within my job description (which was very clearly laid out to me in a meeting with my regional manager) and expect our team of "Data Analysts" to figure these things out in hopes that our overhead could allow us to worry about what is happening in front of us in our individual stores respectfully.
+I'm missing time spekaing and connecting with our clients becuase I have to be worried about a list here and a spreadsheet there. Having to be worried about discrediting a 100 ingridient bundle being sold because the individual who sold it didn't fill out their FTV tracker is kind of insane.
 It got to a point where I decided "Screw it, I'll do it myself" and created a <b>fully loaded program</b> that you are only seeing <i>part</i> of. 
 These tools have helped us (FL005) make a couple thousand dollars extra a month. If it can do that for us, I can only imagine how the rest of the corporate setting would perform using some of these.
 The All-Staff and the FTV things are cool and in theory are great ideas. But in my humble opinion, that data is only useful for corporate (likely for evaluations and things like that).
