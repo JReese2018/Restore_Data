@@ -300,28 +300,28 @@ def month_comparison():
         previous_df = pd.read_csv(previous)
         current_df = pd.read_csv(current)
         print('Cleaning data...')
-        previous_df = previous_df.drop(columns=['Studio Code', 'Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
-        current_df = current_df.drop(columns=['Invoice ID', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax Amount', 'Amount', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit Used'])
+        previous_df = previous_df.drop(columns=['Studio Code', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit'])
+        current_df = current_df.drop(columns=['Studio Code', 'Client ID', 'Therapy Category', 'Business Category', 'Sales Rep', 'Autopay Status', 'Tax', 'Discount', 'Gross adjusted Revenue', 'Quantity', 'Credit'])
         print('Creating new column for first and last names...')
         current_df['Name'] = current_df['First Name'] + ' ' + current_df['Last Name']
         current_df = current_df.drop(columns=['First Name', 'Last Name'])
-        current_df = current_df[['Name', 'Email', 'Phone #', 'Item', 'Purchase Date']]
+        current_df = current_df[['Name', 'Email', 'Phone', 'Item ', 'Date ']]
         previous_df['Name'] = previous_df['First Name'] + ' ' + previous_df['Last Name']
         previous_df = previous_df.drop(columns=['First Name', 'Last Name'])
-        previous_df = previous_df[['Name', 'Email', 'Phone #', 'Item', 'Purchase Date']]
+        previous_df = previous_df[['Name', 'Email', 'Phone', 'Item ', 'Date ']]
         print('Calculating Number of Membership in first dataset...')
-        previous_discover_count = len(previous_df.loc[previous_df['Item'] == 'Discover Membership'])
-        previous_levelup_count = len(previous_df.loc[previous_df['Item'] == 'Level Up Membership'])
-        previous_elevate_count = len(previous_df.loc[previous_df['Item'] == 'Elevate Membership'])
-        previous_core_count = len(previous_df.loc[previous_df['Item'] == 'Core Membership'])
-        previous_restore_count = len(previous_df.loc[previous_df['Item'] == 'Restore Membership'])
-        previous_restorecouples_count = len(previous_df.loc[previous_df['Item'] == 'Restore Membership - Couples'])
-        previous_wellness_count = len(previous_df.loc[previous_df['Item'] == 'Wellness Membership'])
-        previous_wellnesscouples_count = len(previous_df.loc[previous_df['Item'] == 'Wellness Membership - Couples'])
-        previous_daily_count = len(previous_df.loc[previous_df['Item'] == 'Daily Membership'])
+        previous_discover_count = len(previous_df.loc[previous_df['Item '] == 'Discover Membership'])
+        previous_levelup_count = len(previous_df.loc[previous_df['Item '] == 'Level Up Membership'])
+        previous_elevate_count = len(previous_df.loc[previous_df['Item '] == 'Elevate Membership'])
+        previous_core_count = len(previous_df.loc[previous_df['Item '] == 'Core Membership'])
+        previous_restore_count = len(previous_df.loc[previous_df['Item '] == 'Restore Membership'])
+        previous_restorecouples_count = len(previous_df.loc[previous_df['Item '] == 'Restore Membership - Couples'])
+        previous_wellness_count = len(previous_df.loc[previous_df['Item '] == 'Wellness Membership'])
+        previous_wellnesscouples_count = len(previous_df.loc[previous_df['Item '] == 'Wellness Membership - Couples'])
+        previous_daily_count = len(previous_df.loc[previous_df['Item '] == 'Daily Membership'])
         previous_membership_count = len(previous_df)
         print('Identifying month...')
-        previous_month = previous_df['Purchase Date'].head(1).str.split('/').str[0].values[0]
+        previous_month = previous_df['Date '].head(1).str.split('/').str[0].values[0]
         if previous_month == '1':
             previous_month = 'January'
         elif previous_month == '2':
@@ -349,18 +349,18 @@ def month_comparison():
         else:
             current_month = 'Month'
         print('Calculating Number of Membership in second dataset...')
-        current_discover_count = len(current_df.loc[current_df['Item'] == 'Discover Membership'])
-        current_levelup_count = len(current_df.loc[current_df['Item'] == 'Level Up Membership'])
-        current_elevate_count = len(current_df.loc[current_df['Item'] == 'Elevate Membership'])
-        current_core_count = len(current_df.loc[current_df['Item'] == 'Core Membership'])
-        current_restore_count = len(current_df.loc[current_df['Item'] == 'Restore Membership'])
-        current_restorecouples_count = len(current_df.loc[current_df['Item'] == 'Restore Membership - Couples'])
-        current_wellness_count = len(current_df.loc[current_df['Item'] == 'Wellness Membership'])
-        current_wellnesscouples_count = len(current_df.loc[current_df['Item'] == 'Wellness Membership - Couples'])
-        current_daily_count = len(current_df.loc[current_df['Item'] == 'Daily Membership'])
+        current_discover_count = len(current_df.loc[current_df['Item '] == 'Discover Membership'])
+        current_levelup_count = len(current_df.loc[current_df['Item '] == 'Level Up Membership'])
+        current_elevate_count = len(current_df.loc[current_df['Item '] == 'Elevate Membership'])
+        current_core_count = len(current_df.loc[current_df['Item '] == 'Core Membership'])
+        current_restore_count = len(current_df.loc[current_df['Item '] == 'Restore Membership'])
+        current_restorecouples_count = len(current_df.loc[current_df['Item '] == 'Restore Membership - Couples'])
+        current_wellness_count = len(current_df.loc[current_df['Item '] == 'Wellness Membership'])
+        current_wellnesscouples_count = len(current_df.loc[current_df['Item '] == 'Wellness Membership - Couples'])
+        current_daily_count = len(current_df.loc[current_df['Item '] == 'Daily Membership'])
         current_membership_count = len(current_df)
         print('Identifying month...')
-        current_month = current_df['Purchase Date'].head(1).str.split('/').str[0].values[0]
+        current_month = current_df['Date '].head(1).str.split('/').str[0].values[0]
         if current_month == '1':
             current_month = 'January'
         elif current_month == '2':
@@ -389,7 +389,7 @@ def month_comparison():
             current_month = 'Month'
         print('Identifying lost members, this could take a some time...')
         merged_df = pd.merge(previous_df, current_df, on='Name', suffixes=('_prev', '_current'), how='outer', indicator=True)
-        lost_members = merged_df[merged_df['_merge'] == 'left_only'][['Name', 'Email_prev', 'Phone #_prev', 'Item_prev']].values.tolist()
+        lost_members = merged_df[merged_df['_merge'] == 'left_only'][['Name', 'Email_prev', 'Phone_prev', 'Item _prev']].values.tolist()
         print('Identifying members who are in both datasets, this could take a some time...')
         overlap_members = []
         for index, row1 in previous_df.iterrows():
@@ -399,7 +399,7 @@ def month_comparison():
                 if name1 != name2:
                     continue
                 else:
-                    my_list = [row1['Name'], row1['Email'], row1['Phone #'], row1['Item']]
+                    my_list = [row1['Name'], row1['Email'], row1['Phone'], row1['Item ']]
                     overlap_members.append(my_list)
                     continue
             continue
